@@ -1,18 +1,21 @@
-import { Environment, MeshTransmissionMaterial } from '@react-three/drei'
-
+import { Environment } from '@react-three/drei'
+import { useEnvironment } from '@react-three/drei'
 const Scene = () => {
+  const envMap = useEnvironment({ files: 'kloppenheim.hdr' })
   return (
     <>
       <ambientLight intensity={10} />
       <mesh position={[0, 1, 0]}>
-        <boxGeometry args={[1, 1, 1]} />
-        <MeshTransmissionMaterial
-          thickness={0.3} // Adjust thickness for desired glass effect
-          roughness={0.1} // Adjust roughness for clarity
-          transmission={0.8} // Adjust transmission for transparency
+        <sphereGeometry args={[0.5, 32, 32]} />
+        <meshStandardMaterial
+          metalness={1}
+          roughness={0.1}
+          envMap={envMap}
+          opacity={0.9}
+          transparent
         />
       </mesh>
-      <Environment resolution={512} background preset="night" />
+      <Environment resolution={512} background files={'kloppenheim.hdr'} />
     </>
   )
 }
