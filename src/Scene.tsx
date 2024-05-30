@@ -1,23 +1,24 @@
-import { Environment } from '@react-three/drei'
-import { useEnvironment } from '@react-three/drei'
-const Scene = () => {
-  const envMap = useEnvironment({ files: 'kloppenheim.hdr' })
-  return (
-    <>
-      <ambientLight intensity={10} />
-      <mesh position={[0, 1, 0]}>
-        <sphereGeometry args={[0.5, 32, 32]} />
-        <meshStandardMaterial
-          metalness={1}
-          roughness={0.1}
-          envMap={envMap}
-          opacity={0.9}
-          transparent
-        />
-      </mesh>
-      <Environment resolution={512} background files={'kloppenheim.hdr'} />
-    </>
-  )
+import { useFrame } from '@react-three/fiber'
+import { PropsWithChildren, useRef } from 'react'
+import { Group, MathUtils, Vector3 } from 'three'
+
+function Scene({ children }: PropsWithChildren) {
+  const ref = useRef<Group>(null)
+  const vec = new Vector3()
+
+  useFrame(({ pointer, camera }) => {
+    if (ref.current) {
+      camera.position.lerp(vec.set(pointer.x * 2, 0, 3.5), 0.05)
+      ref.current.position.lerp(vec.set(pointer.x * 1, pointer.y * 0.1, 0), 0.1)
+      ref.current.rotation.y = MathUtils.lerp(
+        ref.current.rotation.y,
+        (-pointer.x * Math.PI) / 20,
+        0.1
+      )
+    }
+  })
+
+  return <group ref={ref}>{children}</group>
 }
 
 export default Scene
