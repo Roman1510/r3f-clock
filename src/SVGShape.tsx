@@ -1,14 +1,15 @@
-import { useState, useRef, useMemo } from 'react'
-import { MeshBasicMaterialProps, useFrame, useLoader } from '@react-three/fiber'
+import { useState, useRef, useMemo, FC } from 'react'
+import { MeshProps, useFrame, useLoader } from '@react-three/fiber'
 import { SVGLoader } from 'three/examples/jsm/Addons.js'
 import { Mesh } from 'three'
 import { Bloom, EffectComposer, Noise } from '@react-three/postprocessing'
 
-interface SVGShapeProps extends MeshBasicMaterialProps {
+interface SVGShapeProps extends MeshProps {
   svgPath: string
+  color: string
 }
 
-const SVGShape: React.FC<SVGShapeProps> = ({ svgPath, ...props }) => {
+const SVGShape: FC<SVGShapeProps> = ({ svgPath, color, ...props }) => {
   const ref = useRef<Mesh>(null)
   const [r] = useState(() => Math.random() * 10000)
   const [hovered, setHovered] = useState(false)
@@ -45,7 +46,7 @@ const SVGShape: React.FC<SVGShapeProps> = ({ svgPath, ...props }) => {
       geometry={geom}
       {...props}
     >
-      <meshBasicMaterial toneMapped={false} />
+      <meshBasicMaterial color={color} toneMapped={false} />
       {hovered && (
         <EffectComposer multisampling={8}>
           <Bloom

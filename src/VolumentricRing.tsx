@@ -1,8 +1,10 @@
-import { useFrame } from '@react-three/fiber'
+import { GroupProps, useFrame } from '@react-three/fiber'
 import { FC, useEffect, useRef } from 'react'
 import { DoubleSide, Group, MathUtils } from 'three'
 
-export const VolumetricRing: FC = (props) => {
+interface IVolumentricRingProps extends GroupProps {}
+
+export const VolumetricRing: FC<IVolumentricRingProps> = ({ ...props }) => {
   const innerRadius = 2
   const outerRadius = 4
   const thickness = 1

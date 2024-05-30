@@ -8,13 +8,12 @@ export const Ground = () => {
   ])
 
   return (
-    <mesh position={[0, 0, 0]}>
+    <mesh position={[0, -0.8, 0]} rotation={[-Math.PI / 2, 0, 0]}>
       <planeGeometry args={[8, 8]} />
       <MeshReflectorMaterial
         blur={[500, 100]}
         mixBlur={12}
         mixStrength={1.5}
-        position-y={-0.8}
         color="#f0f0f0"
         metalness={0}
         roughnessMap={floor}
