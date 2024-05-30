@@ -2,7 +2,7 @@ import { useFrame } from '@react-three/fiber'
 import { PropsWithChildren, useRef } from 'react'
 import { Group, MathUtils, Vector3 } from 'three'
 
-function Scene({ children }: PropsWithChildren) {
+const Scene = ({ children }: PropsWithChildren) => {
   const ref = useRef<Group>(null)
   const vec = new Vector3()
 
