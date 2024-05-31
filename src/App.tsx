@@ -2,13 +2,13 @@ import { Canvas } from '@react-three/fiber'
 import Scene from './Scene'
 import { Suspense } from 'react'
 import SVGShape from './SVGShape'
-import { VolumetricRing } from './VolumentricRing'
 import { Ground } from './Ground'
-import { CameraShake } from '@react-three/drei'
+import { AdaptiveDpr, CameraShake } from '@react-three/drei'
+import { Clock } from './Clock'
 
 function App() {
   return (
-    <Canvas dpr={[0.5, 0.7]} camera={{ position: [8, 0, 15] }}>
+    <Canvas camera={{ position: [8, 0, 15] }}>
       <color attach="background" args={['black']} />
       <ambientLight />
       <Suspense fallback={null}>
@@ -42,7 +42,7 @@ function App() {
             rotation={[0, 0, Math.PI / 3]}
           />
 
-          <VolumetricRing position={[-1, 0, 2.2]} scale={0.1} />
+          <Clock position={[-1.3, 0.5, 2.2]} scale={0.1} />
           <Ground />
         </Scene>
       </Suspense>
@@ -51,6 +51,7 @@ function App() {
         pitchFrequency={0.1}
         rollFrequency={0.1}
       />
+      <AdaptiveDpr pixelated />
     </Canvas>
   )
 }

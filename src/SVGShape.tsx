@@ -9,21 +9,22 @@ interface SVGShapeProps extends MeshProps {
   color: string
 }
 
-const SVGShape: FC<SVGShapeProps> = ({ svgPath, color, ...props }) => {
-  const ref = useRef<Mesh>(null)
-  const [r] = useState(() => Math.random() * 10000)
-  const [hovered, setHovered] = useState(false)
+const SVGShape: FC<SVGShapeProps> = ({ svgPath, color, ...restProps }) => {
+  const meshRef = useRef<Mesh>(null)
+  const randomNumber = useRef(Math.random() * 10000)
+  const [isHovered, setIsHovered] = useState(false)
+
   useFrame((state) => {
-    if (ref.current) {
-      ref.current.position.y =
-        -1.75 + Math.sin(state.clock.elapsedTime + r) / 10
+    if (meshRef.current) {
+      meshRef.current.position.y =
+        -1.75 + Math.sin(state.clock.elapsedTime + randomNumber.current) / 10
     }
   })
 
   const {
     paths: [path],
   } = useLoader(SVGLoader, svgPath)
-  const geom = useMemo(
+  const geometry = useMemo(
     () =>
       SVGLoader.pointsToStroke(
         path.subPaths[0].getPoints(),
@@ -34,20 +35,20 @@ const SVGShape: FC<SVGShapeProps> = ({ svgPath, color, ...props }) => {
 
   return (
     <mesh
-      ref={ref}
-      onPointerOver={(e) => {
-        e.stopPropagation()
-        setHovered(true)
+      ref={meshRef}
+      onPointerOver={(event) => {
+        event.stopPropagation()
+        setIsHovered(true)
       }}
-      onPointerOut={(e) => {
-        e.stopPropagation()
-        setHovered(false)
+      onPointerOut={(event) => {
+        event.stopPropagation()
+        setIsHovered(false)
       }}
-      geometry={geom}
-      {...props}
+      geometry={geometry}
+      {...restProps}
     >
       <meshBasicMaterial color={color} toneMapped={false} />
-      {hovered && (
+      {isHovered && (
         <EffectComposer multisampling={8}>
           <Bloom
             luminanceThreshold={0}
