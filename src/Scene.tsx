@@ -30,7 +30,7 @@ const Scene = () => {
 
       cameraPosition.x = MathUtils.lerp(cameraPosition.x, pointer.x - 0.6, 0.05)
       cameraPosition.y = MathUtils.lerp(cameraPosition.y, -0.1, 0.05)
-      cameraPosition.z = MathUtils.lerp(cameraPosition.z, 3, 0.03)
+      cameraPosition.z = MathUtils.lerp(cameraPosition.z, 4, 0.03)
 
       refPosition.x = MathUtils.lerp(refPosition.x, pointer.x, 0.1)
       refPosition.y = MathUtils.lerp(refPosition.y, pointer.y * 0.1, 0.1)
@@ -55,12 +55,12 @@ const Scene = () => {
   ) : null
 
   return (
-    <group ref={ref} position={[1, -0.5, -1]}>
+    <group ref={ref} position={[-5, -0.5, -1]} scale={0.9}>
       <SVGShape
         svgPath="/triangle.svg"
         color="#c487ed"
         scale={0.007}
-        position={[0, -1, -4]}
+        position={[-2, -1, -4]}
         rotation={[0, 0, Math.PI / 3]}
         setIsHovered={handleHover}
       />
@@ -68,21 +68,21 @@ const Scene = () => {
         svgPath="/square.svg"
         color="#ff3333"
         scale={0.015}
-        position={[5, 1, -6.3]}
+        position={[3, 1, -6.3]}
         rotation={[0, 0, Math.PI / 2]}
       />
       <SVGShape
         svgPath="/circle.svg"
         color="#20ffbf"
         scale={0.009}
-        position={[-0.9, 0.5, -4]}
+        position={[-2.9, 0.5, -4]}
         rotation={[0, 0, Math.PI / 3]}
       />
       <SVGShape
         svgPath="/X.svg"
         color="yellow"
         scale={0.03}
-        position={[0, 2, -5.5]}
+        position={[-2, 2, -5.5]}
         rotation={[0, 0, Math.PI / 3]}
       />
       <Ground />
@@ -92,8 +92,8 @@ const Scene = () => {
         {glitchComponent!}
       </EffectComposer>
       <Clock
-        position={[-3, 1.5, 1]}
-        scale={0.19}
+        position={[-2, 2.2, 1.2]}
+        scale={0.26}
         rotation={[Math.PI, 1, Math.PI / 2]}
       />
     </group>
