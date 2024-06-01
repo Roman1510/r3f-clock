@@ -92,8 +92,8 @@ const Scene = () => {
         {glitchComponent!}
       </EffectComposer>
       <Clock
-        position={[-2, 2.2, 1.2]}
-        scale={0.26}
+        position={[-2, 1.6, 1.2]}
+        scale={0.19}
         rotation={[Math.PI, 1, Math.PI / 2]}
       />
     </group>

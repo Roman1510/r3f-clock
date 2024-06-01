@@ -21,7 +21,7 @@ function App() {
           maxWidth: '100vw',
         }}
       >
-        <Canvas camera={{ position: [5, 0, 12] }}>
+        <Canvas camera={{ position: [8, 0, 15] }}>
           <color attach="background" args={['black']} />
           <ambientLight intensity={3} />
           <directionalLight position={[3, 2, -3]} />

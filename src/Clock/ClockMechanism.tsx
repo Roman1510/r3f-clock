@@ -23,7 +23,7 @@ export const ClockMechanism: FC<IClockMechanismProps> = ({ ...props }) => {
             return (
               <group key={index}>
                 <mesh key={index} rotation={[0, angle, 0]} position={position}>
-                  <boxGeometry args={[1, 0.3, 0.3]} />
+                  <boxGeometry args={[0.5, 0.45, 0.45]} />
                   <meshPhysicalMaterial
                     envMapIntensity={1}
                     metalness={0}
