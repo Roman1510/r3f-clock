@@ -10,15 +10,16 @@ function App() {
       <Canvas camera={{ position: [8, 0, 15] }}>
         <color attach="background" args={['black']} />
         <ambientLight intensity={3} />
+        <directionalLight position={[3, 2, -3]} />
         <Suspense fallback={null}>
           <Scene />
-          <AdaptiveDpr pixelated />
         </Suspense>
         <CameraShake
           yawFrequency={0.2}
           pitchFrequency={0.1}
           rollFrequency={0.1}
         />
+        <AdaptiveDpr pixelated />
       </Canvas>
     </div>
   )

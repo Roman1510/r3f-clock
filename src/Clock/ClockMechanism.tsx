@@ -1,10 +1,13 @@
 import { GroupProps } from '@react-three/fiber'
 import { FC } from 'react'
-import { Vector3 } from 'three'
+import { TextureLoader, Vector3 } from 'three'
 
 interface IClockMechanismProps extends GroupProps {}
 
 export const ClockMechanism: FC<IClockMechanismProps> = ({ ...props }) => {
+  const envMapLoader = new TextureLoader()
+  const envMap = envMapLoader.load('/envMap.hdr')
+
   return (
     <>
       <group {...props}>
@@ -21,7 +24,15 @@ export const ClockMechanism: FC<IClockMechanismProps> = ({ ...props }) => {
               <group key={index}>
                 <mesh key={index} rotation={[0, angle, 0]} position={position}>
                   <boxGeometry args={[1, 0.3, 0.3]} />
-                  <meshBasicMaterial color={'white'} />
+                  <meshPhysicalMaterial
+                    envMapIntensity={1}
+                    metalness={0}
+                    roughness={0}
+                    transmission={1}
+                    transparent
+                    opacity={0.5}
+                    envMap={envMap}
+                  />
                 </mesh>
               </group>
             )
@@ -40,7 +51,7 @@ export const ClockMechanism: FC<IClockMechanismProps> = ({ ...props }) => {
               <group key={index}>
                 <mesh key={index} rotation={[0, angle, 0]} position={position}>
                   <boxGeometry args={[0.5, 0.2, 0.2]} />
-                  <meshBasicMaterial color={'white'} />
+                  <meshStandardMaterial color={'white'} />
                 </mesh>
               </group>
             )
@@ -59,7 +70,7 @@ export const ClockMechanism: FC<IClockMechanismProps> = ({ ...props }) => {
               <group key={index}>
                 <mesh key={index} rotation={[0, angle, 0]} position={position}>
                   <boxGeometry args={[0.5, 0.2, 0.2]} />
-                  <meshBasicMaterial color={'white'} />
+                  <meshStandardMaterial color={'white'} />
                 </mesh>
               </group>
             )

@@ -1,5 +1,5 @@
 import { useFrame } from '@react-three/fiber'
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 import { Group, MathUtils, Vector2, Vector3 } from 'three'
 import SVGShape from './SVGShape'
 import { Clock } from './Clock/Clock'
@@ -23,22 +23,19 @@ const Scene = () => {
     isHovered.current = value
   }
 
-  useEffect(() => {
-    console.log('hover changed', isHovered.current)
-  }, [isHovered])
-
   useFrame(({ pointer, camera }) => {
     if (ref.current) {
+      camera.position.copy(cameraPosition)
+      ref.current.position.copy(refPosition)
+
       cameraPosition.x = MathUtils.lerp(cameraPosition.x, pointer.x - 0.6, 0.05)
       cameraPosition.y = MathUtils.lerp(cameraPosition.y, -0.1, 0.05)
-      cameraPosition.z = MathUtils.lerp(cameraPosition.z, 3, 0.05)
+      cameraPosition.z = MathUtils.lerp(cameraPosition.z, 3, 0.03)
 
       refPosition.x = MathUtils.lerp(refPosition.x, pointer.x, 0.1)
       refPosition.y = MathUtils.lerp(refPosition.y, pointer.y * 0.1, 0.1)
       refPosition.z = MathUtils.lerp(refPosition.z, 0, 0.1)
 
-      camera.position.copy(cameraPosition)
-      ref.current.position.copy(refPosition)
       ref.current.rotation.y = MathUtils.lerp(
         ref.current.rotation.y,
         (-pointer.x * Math.PI) / 20,
@@ -88,7 +85,6 @@ const Scene = () => {
         position={[0, 2, -5.5]}
         rotation={[0, 0, Math.PI / 3]}
       />
-
       <Ground />
       <EffectComposer multisampling={8} enableNormalPass={false}>
         <Bloom luminanceThreshold={0.8} mipmapBlur />
@@ -97,7 +93,7 @@ const Scene = () => {
       </EffectComposer>
       <Clock
         position={[-3, 1.5, 1]}
-        scale={0.22}
+        scale={0.19}
         rotation={[Math.PI, 1, Math.PI / 2]}
       />
     </group>
