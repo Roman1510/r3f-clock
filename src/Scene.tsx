@@ -1,11 +1,31 @@
 import { useFrame } from '@react-three/fiber'
-import { PropsWithChildren, useRef } from 'react'
-import { Group, MathUtils, Vector3 } from 'three'
+import { useEffect, useRef } from 'react'
+import { Group, MathUtils, Vector2, Vector3 } from 'three'
+import SVGShape from './SVGShape'
+import { Clock } from './Clock/Clock'
+import { Ground } from './Ground'
+import {
+  Bloom,
+  EffectComposer,
+  Glitch,
+  Noise,
+} from '@react-three/postprocessing'
+import { BlendFunction, GlitchMode } from 'postprocessing'
 
-const Scene = ({ children }: PropsWithChildren) => {
+const Scene = () => {
   const ref = useRef<Group>(null)
   const cameraPosition = new Vector3()
   const refPosition = new Vector3()
+
+  const isHovered = useRef(false)
+
+  const handleHover = (value: boolean) => {
+    isHovered.current = value
+  }
+
+  useEffect(() => {
+    console.log('hover changed', isHovered.current)
+  }, [isHovered])
 
   useFrame(({ pointer, camera }) => {
     if (ref.current) {
@@ -27,7 +47,61 @@ const Scene = ({ children }: PropsWithChildren) => {
     }
   })
 
-  return <group ref={ref}>{children}</group>
+  const glitchComponent = isHovered.current ? (
+    <Glitch
+      delay={new Vector2(0, 0)}
+      duration={new Vector2(0.05, 0.1)}
+      strength={new Vector2(0.1, 0.5)}
+      mode={GlitchMode.SPORADIC}
+      ratio={0.3}
+    />
+  ) : null
+
+  return (
+    <group ref={ref} position={[1, -0.5, -1]}>
+      <SVGShape
+        svgPath="/triangle.svg"
+        color="#c487ed"
+        scale={0.007}
+        position={[0, -1, -4]}
+        rotation={[0, 0, Math.PI / 3]}
+        setIsHovered={handleHover}
+      />
+      <SVGShape
+        svgPath="/square.svg"
+        color="#ff3333"
+        scale={0.015}
+        position={[5, 1, -6.3]}
+        rotation={[0, 0, Math.PI / 2]}
+      />
+      <SVGShape
+        svgPath="/circle.svg"
+        color="#20ffbf"
+        scale={0.009}
+        position={[-0.9, 0.5, -4]}
+        rotation={[0, 0, Math.PI / 3]}
+      />
+      <SVGShape
+        svgPath="/X.svg"
+        color="yellow"
+        scale={0.03}
+        position={[0, 2, -5.5]}
+        rotation={[0, 0, Math.PI / 3]}
+      />
+
+      <Ground />
+      <EffectComposer multisampling={8} enableNormalPass={false}>
+        <Bloom luminanceThreshold={0.8} mipmapBlur />
+        <Noise premultiply blendFunction={BlendFunction.SOFT_LIGHT} />
+        {glitchComponent!}
+      </EffectComposer>
+      <Clock
+        position={[-3, 1.5, 1]}
+        scale={0.22}
+        rotation={[Math.PI, 1, Math.PI / 2]}
+      />
+    </group>
+  )
 }
 
 export default Scene

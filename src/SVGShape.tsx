@@ -1,25 +1,22 @@
-import { useState, useRef, useMemo, FC } from 'react'
-import { MeshProps, useFrame, useLoader } from '@react-three/fiber'
+import { useRef, useMemo, FC } from 'react'
+import { MeshProps, useLoader } from '@react-three/fiber'
 import { SVGLoader } from 'three/examples/jsm/Addons.js'
-import { Mesh } from 'three'
-import { Bloom, EffectComposer, Noise } from '@react-three/postprocessing'
+import { Group } from 'three'
+import { Float } from '@react-three/drei'
 
 interface SVGShapeProps extends MeshProps {
   svgPath: string
   color: string
+  setIsHovered?: (isHovered: boolean) => void
 }
 
-const SVGShape: FC<SVGShapeProps> = ({ svgPath, color, ...restProps }) => {
-  const meshRef = useRef<Mesh>(null)
-  const randomNumber = useRef(Math.random() * 10000)
-  const [isHovered, setIsHovered] = useState(false)
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.position.y =
-        -1.75 + Math.sin(state.clock.elapsedTime + randomNumber.current) / 10
-    }
-  })
+const SVGShape: FC<SVGShapeProps> = ({
+  svgPath,
+  color,
+  setIsHovered,
+  ...props
+}) => {
+  const groupRef = useRef<Group>(null)
 
   const {
     paths: [path],
@@ -34,36 +31,35 @@ const SVGShape: FC<SVGShapeProps> = ({ svgPath, color, ...restProps }) => {
   )
 
   return (
-    <mesh
-      ref={meshRef}
-      onPointerOver={(event) => {
-        event.stopPropagation()
-        setIsHovered(true)
-      }}
-      onPointerOut={(event) => {
-        event.stopPropagation()
-        setIsHovered(false)
-      }}
-      geometry={geometry}
-      {...restProps}
+    <Float
+      speed={1}
+      rotationIntensity={0.5}
+      floatIntensity={0.8}
+      floatingRange={[0.01, 0.35]}
     >
-      <meshBasicMaterial color={color} toneMapped={false} />
-      {isHovered && (
-        <EffectComposer multisampling={8}>
-          <Bloom
-            luminanceThreshold={0}
-            luminanceSmoothing={0.4}
-            intensity={0.6}
+      <group
+        ref={groupRef}
+        onPointerOver={(e) => {
+          e.stopPropagation()
+          console.log('true from svg shape')
+          setIsHovered?.(true)
+        }}
+        onPointerOut={(e) => {
+          e.stopPropagation()
+          console.log('false from svg shape')
+          setIsHovered?.(false)
+        }}
+      >
+        <mesh geometry={geometry} {...props}>
+          <meshStandardMaterial
+            color={color}
+            emissive={color}
+            emissiveIntensity={3}
+            toneMapped={false}
           />
-          <Bloom
-            luminanceThreshold={0}
-            luminanceSmoothing={0}
-            intensity={0.5}
-          />
-          <Noise premultiply opacity={0.02} />
-        </EffectComposer>
-      )}
-    </mesh>
+        </mesh>
+      </group>
+    </Float>
   )
 }
 
