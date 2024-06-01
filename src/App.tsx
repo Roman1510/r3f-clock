@@ -3,7 +3,7 @@ import Scene from './Scene'
 import { Suspense } from 'react'
 import SVGShape from './SVGShape'
 import { Ground } from './Ground'
-import { AdaptiveDpr, CameraShake } from '@react-three/drei'
+import { AdaptiveDpr, CameraShake, OrbitControls } from '@react-three/drei'
 import { Clock } from './Clock'
 
 function App() {
